@@ -140,7 +140,6 @@ function Gifts() {
     const handleDelete = async () => {
         dispatch({ type: "START_LOADING" });
         const response = await del(`/giftBulkDelete?type=${selectedGift.type}`, true);
-        debugger
         if (response.status === 200) {
             let _gifts = [...gifts].filter(gift => gift.type !== selectedGift.type);
             setGifts(_gifts);
@@ -158,6 +157,7 @@ function Gifts() {
             dispatch({ type: "START_LOADING" });
 
             const response = await get("/getGift", true);
+            debugger
             if (response.status === 200) {
                 const {
                     giftItems,
@@ -236,9 +236,9 @@ function Gifts() {
                                 <Grid item xs={12} sm={6} md={4} key={`gift-${gift.type}-${gift.totalSum}-${index}`}>
                                     <Box className={classes.card}>
                                         <Box className="text-center" width={.3} mt={2}>
-                                            {/* <img alt="gift" src="/laptop.png" style={{ width: 88, height: 48 }} /> */}
-                                            <img src='https://placehold.it/88x48?text=image' alt='' />
-                                            <Box component="p" mt={3}>{gift.type}</Box>
+                                            <img alt="gift" src={gift.image_url} style={{ width: 88, height: 48 }} />
+                                            {/* <img src='https://placehold.it/88x48?text=image' alt='' /> */}
+                                            <Box component="p" mt={3} className="semi-bold">{gift.type}</Box>
                                         </Box>
                                         <Box ml="auto" mr={2}>
                                             <Box className="center-y">
@@ -277,12 +277,8 @@ function Gifts() {
                                         <TableRow key={`gift-${gift.type}-${gift.totalSum}-${index}`}>
                                             <TableCell component="th" scope="row">
                                                 <Box className={classes.giftBox}>
-                                                    <img src='https://placehold.it/88x48?text=image' alt='' />
-                                                    {/* <img src={gift.image_url} alt={gift.type} style={{
-                                                    width: '88px',
-                                                    height: '64px',
-                                                    objectFit: 'contain',
-                                                }} /> */}
+                                                    <img alt="gift" src={gift.image_url} style={{ width: 88, height: 48 }} />
+                                                    {/* <img src='https://placehold.it/88x48?text=image' alt='' /> */}
                                                     <Box className="text-16 text-brown">{gift.type}</Box>
                                                 </Box>
                                             </TableCell>

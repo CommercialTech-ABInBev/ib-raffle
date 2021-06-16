@@ -49,6 +49,7 @@ const useStyles = makeStyles(theme => ({
 function Result({ location }) {
 
     const classes = useStyles();
+    debugger
     if (!location.state){
         return <Redirect to="/" />
     }

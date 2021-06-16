@@ -169,7 +169,6 @@ function Wheel() {
             'numSegments': data.length + 1,
             'fillStyle': '#ffffff',
             'lineWidth': 5,
-
             'imageDirection': 'S',
             'segments':
                 [
@@ -207,6 +206,7 @@ function Wheel() {
                 let wheelData = giftItems.map(giftItem => ({ 
                     text: giftItem.type,
                     textFontSize: 20,
+                    image: giftItem.image_url,
                 }))
                 setGifts(wheelData);
                 setupCanvas(wheelData);

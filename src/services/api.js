@@ -3,10 +3,11 @@ import jwt_decode from 'jwt-decode';
 
 axios.defaults.baseURL = 'https://ib-spin.herokuapp.com/v1.0/api'
 
-export const post = async (url, data, authorize = false) => {
+export const post = async (url, data, authorize = false, headers = null) => {
     let config = {
         'Accept': 'application/json',
         ...(authorize && { 'Authorization': `Bearer ` + localStorage.getItem("token") }),
+        ...headers
     };
     try {
         const res = await axios.post(url, data, { headers: config });

@@ -27,8 +27,6 @@ const initialState = {
     error: null,
 };
 
-debugger
-
 
 export const setAlert = (dispatch, title, body, type, timeout = 2000) => {
     const id = uuidv4();
@@ -52,13 +50,11 @@ export const setAlert = (dispatch, title, body, type, timeout = 2000) => {
 const AppReducer = (state, action) => {
     switch (action.type) {
         case "LOAD_USER":
-            debugger;
             token = localStorage.getItem('token');
             setAuthToken(token);
             return { ...state, ...(loadState(token)) };
 
         case "LOGIN":
-            debugger;
             token = action.payload;
             setAuthToken(token);
             localStorage.setItem('token', token);
@@ -101,7 +97,6 @@ export function AppProvider(props) {
     const [state, dispatch] = useReducer(AppReducer, initialState);
 
     useEffect(() => {
-        debugger;
         dispatch({ type: "LOAD_USER" });
     }, []);
 

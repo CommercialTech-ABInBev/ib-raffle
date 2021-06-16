@@ -72,7 +72,8 @@ function CreateGift() {
         type: '',
         quantity: '',
         country: 'Nigeria',
-        image: '',
+        preview: null,
+        image: null,
     };
 
     const [formData, setFormData] = React.useState(initialState);
@@ -83,13 +84,14 @@ function CreateGift() {
 
     function handleImage(e) {
         e.preventDefault();
-        if (!e.target.files[0].name.match(/.(jpg|jpeg|png|gif)$/i)) {
+        let files = e.target.files;
+        if (!files[0].name.match(/.(jpg|jpeg|png|gif)$/i)) {
             return;
         }
-        if (e.target.files.length === 0) {
+        if (files.length === 0) {
             return;
         }
-        setFormData({ ...formData, image: URL.createObjectURL(e.target.files[0]) });
+        setFormData({ ...formData, image: files[0], preview: URL.createObjectURL(files[0]) });
     }
 
     const handleCreate = async () => {
@@ -102,8 +104,10 @@ function CreateGift() {
         _formData.append('quantity', formData.quantity);
         // _formData.append('country', formData.country);
 
-        const response = await post("/addGift", _formData, true);
-        
+        const response = await post("/addGift", _formData, true, {
+            'Content-Type': `multipart/form-data; boundary=${_formData._boundary}`,
+        });
+        debugger
         if (response.status === 201) {
             setAlert(dispatch, "Success", "Gift created successfully", "success");
             setFormData(initialState);
@@ -113,7 +117,7 @@ function CreateGift() {
         dispatch({ type: "STOP_LOADING" });
     }
 
-    const formComplete = formData.type && formData.quantity && formData.country && formData.image;
+    const formComplete = formData.type && formData.quantity && formData.country && formData.image && formData.preview;
 
     return (
         <Container maxWidth="sm">
@@ -159,15 +163,15 @@ function CreateGift() {
                     justifyContent="center"
                     className={classes.imageUploadBox} w={1} h={10} py={{ xs: 2, md: 4 }}>
                     <input id="file" type="file" hidden value={""} onChange={handleImage} />
-                    {formData.image ?
+                    {formData.preview ?
                         <label htmlFor="file" className="text-center">
-                            <img src={formData.image} alt="uploaded item" style={{
+                            <img src={formData.preview} alt="uploaded item" style={{
                                 width: 200,
                                 height: 200,
                                 objectFit: 'contain',
                             }} />
                             <Box mt={1} onClick={() => setFormData({
-                                ...formData, image: ''
+                                ...formData, preview: null, image: null,
                             })}
                                 className={clsx('text-14 text-center text-red')}>Click to discard image
                             </Box>
