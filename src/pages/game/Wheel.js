@@ -157,7 +157,7 @@ function Wheel() {
         history.push({
             pathname: '/result',
             state: {
-                prize,
+                data: prize,
             }
         });
     }
@@ -174,7 +174,11 @@ function Wheel() {
             'segments':
                 [
                     ...data,
-                    { 'image': 'http://unsplash.it/120/160?gravity=center', 'text': 'Nothing' }
+                    {
+                        'textFontSize': '20',
+                        'image': 'http://unsplash.it/120/160?gravity=center',
+                        'text': 'Nothing'
+                    }
                 ],
             'animation':
             {
@@ -195,12 +199,15 @@ function Wheel() {
 
         const fetchGifts = async () => {
             dispatch({ type: "START_LOADING" });
-            
+
             const response = await get("/getGift", true);
             if (response.status === 200) {
-                
+
                 const giftItems = response.data["giftItems"];
-                let wheelData = giftItems.map(giftItem => ({ text: giftItem.type }))
+                let wheelData = giftItems.map(giftItem => ({ 
+                    text: giftItem.type,
+                    textFontSize: 20,
+                }))
                 setGifts(wheelData);
                 setupCanvas(wheelData);
             } else {

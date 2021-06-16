@@ -1,21 +1,33 @@
-import React, { useReducer, createContext } from "react";
+import React, { useEffect, useReducer, createContext } from "react";
+import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { isTokenValid, decodeToken } from "./services/api";
+import { isTokenValid, decodeToken, setAuthToken } from "./services/api";
 
 export const AppContext = createContext();
-const token = localStorage.getItem('token');
+let token = null;
 
-const tokenData = decodeToken(token);
-
+const loadState = (token) => {
+    const tokenData = decodeToken(token);
+    return ({
+        alerts: [],
+        username: tokenData.email,
+        isAdmin: tokenData.isAdmin === "1",
+        isAuthenticated: isTokenValid(token),
+        loading: false,
+        error: null,
+    });
+}
 
 const initialState = {
     alerts: [],
-    username: tokenData?.email,
-    isAdmin: !!(tokenData?.isAdmin),
-    isAuthenticated: isTokenValid(token),
+    username: null,
+    isAdmin: false,
+    isAuthenticated: false,
     loading: false,
     error: null,
 };
+
+debugger
 
 
 export const setAlert = (dispatch, title, body, type, timeout = 2000) => {
@@ -37,15 +49,20 @@ export const setAlert = (dispatch, title, body, type, timeout = 2000) => {
     }, timeout);
 };
 
-
 const AppReducer = (state, action) => {
     switch (action.type) {
+        case "LOAD_USER":
+            debugger;
+            token = localStorage.getItem('token');
+            setAuthToken(token);
+            return { ...state, ...(loadState(token)) };
 
         case "LOGIN":
-            return { ...state, isAuthenticated: true };
-
-        case "LOGOUT":
-            return { ...initialState, isAuthenticated: false };
+            debugger;
+            token = action.payload;
+            setAuthToken(token);
+            localStorage.setItem('token', token);
+            return { ...state, ...(loadState(token)) };
 
         // LOADER
         case "START_LOADING":
@@ -63,6 +80,17 @@ const AppReducer = (state, action) => {
         case "CLEAR_ALERTS":
             return { ...state, alerts: [] };
 
+        case "LOGOUT":
+            delete axios.defaults.headers.common.Authorization;
+            return {
+                isAuthenticated: false,
+                alerts: [],
+                isAdmin: false,
+                username: null,
+                error: null,
+                loading: null,
+            };
+
         default:
             throw new Error();
     }
@@ -71,6 +99,11 @@ const AppReducer = (state, action) => {
 
 export function AppProvider(props) {
     const [state, dispatch] = useReducer(AppReducer, initialState);
+
+    useEffect(() => {
+        debugger;
+        dispatch({ type: "LOAD_USER" });
+    }, []);
 
     return (
         <AppContext.Provider value={[state, dispatch]}>

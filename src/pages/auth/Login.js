@@ -14,7 +14,7 @@ import {
     HideIcon,
 } from '../../assets/icons';
 
-import { post, setAuthToken } from '../../services/api';
+import { post } from '../../services/api';
 import { AppContext, setAlert } from '../../Provider';
 
 const useStyles = makeStyles(theme => ({
@@ -84,8 +84,7 @@ function Login() {
         });
         if (response.status === 200) {
             const token = response.data.token;
-            setAuthToken(token);
-            dispatch({ type: "LOGIN" });
+            dispatch({ type: "LOGIN", payload: token });
         } else {
             setAlert(dispatch, "Error", response.data, "error");
         }

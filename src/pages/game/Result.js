@@ -5,7 +5,7 @@ import {
     makeStyles,
 } from '@material-ui/core';
 
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import {
     Confetti,
@@ -49,11 +49,14 @@ const useStyles = makeStyles(theme => ({
 function Result({ location }) {
 
     const classes = useStyles();
+    if (!location.state){
+        return <Redirect to="/" />
+    }
+
     const { data } = location.state;
 
-    
     let prize = null;
-    if (data.result !== "Didn't win") {
+    if (data && data.result !== "Didn't win") {
         prize = data.result
     }
 

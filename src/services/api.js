@@ -97,26 +97,9 @@ export const isTokenValid = (token) => {
 };
 
 export const setAuthToken = (token) => {
-    localStorage.setItem('token', token);
     if (token) {
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
     } else {
         delete axios.defaults.headers.common.Authorization;
     }
 };
-
-// async function queryX(resources) {
-//     const requests = resources.map(resource => axios.get(BASEURL + urls[resource]));
-//     try {
-//         const responses = await axios.all(requests);
-//         return responses;
-//     } catch (e) {
-//         console.log(`Error while fetching ${resources}`);
-//         return {
-//             status: 500,
-//             data: {
-//                 error: 'We tried but caught an issue with the force',
-//             },
-//         };
-//     }
-// }

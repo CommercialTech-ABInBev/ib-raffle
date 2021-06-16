@@ -51,25 +51,8 @@ const useStyles = makeStyles(theme => ({
 function Reset() {
 
     const classes = useStyles();
-    // const history = useHistory();
     const [sent] = useState(false);
-    // const [state, setState] = React.useState({
-    //     email: '',
-    //     password: '',
-    // });
 
-    // const handleChange = (event) => {
-    //     setState({ ...state, [event.target.name]: event.target.value });
-    // }
-
-    // const handleSubmit = (event) => {
-    //     event.preventDefault();
-
-    //     if (state.password.length >= 8 && /\d+/.test(state.password) && /[A-Za-z]+/.test(state.password)) {
-    //         localStorage.setItem("authenticated", "true");
-    //         history.push("/dashboard");
-    //     }
-    // }
 
     return (
         <Grid container justify="center" className={classes.root}>
