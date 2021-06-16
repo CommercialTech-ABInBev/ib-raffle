@@ -1,38 +1,51 @@
-import React from 'react';
-
+import React, { useState, useContext } from 'react';
 import {
     Grid,
     Box,
-    Hidden,
+    IconButton,
     makeStyles,
+    CircularProgress
 } from '@material-ui/core';
-import { useHistory } from 'react-router';
+
+import { Link } from 'react-router-dom';
+
+import {
+    ShowIcon,
+    HideIcon,
+} from '../../assets/icons';
+
+import { post, setAuthToken } from '../../services/api';
+import { AppContext, setAlert } from '../../Provider';
 
 const useStyles = makeStyles(theme => ({
     root: {
         height: "100vh",
-        minHeight: "640px",
-        display: 'flex',
-        overflow: "hidden",
-        backgroundColor: '#fff',
+        minHeight: "667px",
+        overflowY: "auto",
+        backgroundColor: '#45130F',
+        backgroundImage: "url('/large-wheel.png'), url('/background-frame.png')",
+        backgroundRepeat: 'no-repeat, no-repeat',
+        backgroundSize: '25%, 80%',
+        backgroundPosition: 'left center, center center',
+        [theme.breakpoints.down("sm")]: {
+            backgroundImage: "url('/large-wheel.png'), none",
+            backgroundPosition: '-15% -20%, center center',
+        },
     },
-    leftArea: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100%',
-        backgroundColor: "rgba(255, 246, 211, .45)",
-    },
-
     rightArea: {
-        display: 'flex',
-        flexDirection: 'column',
+        marginTop: '18%',
+        marginLeft: '10%',
+
+        [theme.breakpoints.down("sm")]: {
+            marginLeft: '0%',
+            padding: '1rem',
+        },
     },
-    rightContent: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 1,
+    linkArea: {
+        flexDirection: 'reverse',
+        [theme.breakpoints.down('md')]: {
+            flexDirection: 'column-reverse',
+        },
     },
     titleText: {
         color: 'rgba(43, 45, 66, 1)',
@@ -47,98 +60,92 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Login() {
-
+    const [, dispatch] = useContext(AppContext);
     const classes = useStyles();
-    const history = useHistory();
-    const [state, setState] = React.useState({
+
+    const [show, setShow] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = React.useState({
         email: '',
         password: '',
     });
 
     const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.value });
+        setFormData({ ...formData, [event.target.name]: event.target.value });
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        setLoading(true);
         
-        if (state.password.length >= 8 && /\d+/.test(state.password) && /[A-Za-z]+/.test(state.password)) {
-            localStorage.setItem("authenticated", "true");
-            history.push("/dashboard");
+        const response = await post('/auth/login', {
+            email: formData.email,
+            password: formData.password
+        });
+        if (response.status === 200) {
+            const token = response.data.token;
+            setAuthToken(token);
+            dispatch({ type: "LOGIN" });
+        } else {
+            setAlert(dispatch, "Error", response.data, "error");
         }
+        setLoading(false);
     }
 
     return (
-        <Grid comtainer className={classes.root}>
-            <img
-                src="/assets/astronaut.png"
-                className="abs-tr-image"
-                alt="astronaut"
-            />
-            <Hidden smDown>
-                <Grid item md={4} className={classes.leftArea}>
-                    <Box className={classes.leftContent}>
-                        <Box ml={8} my={3} className="hero-text">
-                            Welcome to Star Wars <br />
-                        the Clone Wars
-                    </Box>
-                        <Box>
-                            <img src={'/assets/to_the_stars.png'} alt="to the stars" style={{
-                                width: '350px',
-                                height: 'auto',
-                            }} />
-                        </Box>
-                    </Box>
-                </Grid>
-            </Hidden>
-            <Grid item xs={12} md={5} className={classes.rightArea}>
-                <Box className={classes.rightContent}>
-                    <form id="login-form" onSubmit={handleSubmit}>
-                        <Box my={3} className={classes.titleText}>
-                            Sign in to continue to your account.
-                        </Box>
-                        <Box>
-                            <Box mb={2.5}>
-                                <label>Email address</label>
+        <Grid container justify="center" className={classes.root}>
+            <Grid item xs={12} sm={8} md={5}>
+                <Box className={classes.rightArea}>
+                    <form onSubmit={handleSubmit}>
+                        <Box my={3} className={'text-center text-white text-48'}><b>Login to Play</b></Box>
+                        <Box mb={5}>
+                            <Box mb={4}>
+                                <label className="text-white text-16"><b>Email Address</b></label>
                                 <input
-                                    className="form-control"
+                                    className="form-control game text-16"
                                     name="email"
                                     type="email"
-                                    value={state.email}
+                                    value={formData.email}
                                     onChange={handleChange}
-                                    placeholder="Email address"
+                                    placeholder="Enter email address"
                                     required
                                 />
                             </Box>
-                            <Box mb={5}>
-                                <label>Password</label>
+                            <Box position="relative">
+                                <label className="text-white text-16"><b>Password</b></label>
                                 <input
-                                    className="form-control"
+                                    className="form-control game text-16"
                                     name="password"
-                                    type="password"
-                                    value={state.password}
+                                    type={show ? "text" : "password"}
+                                    value={formData.password}
                                     onChange={handleChange}
-                                    placeholder="Enter strong password"
+                                    placeholder="Enter password"
                                     required />
-                            </Box>
-                            <Box>
-                                <button type="submit" className="primary-button">Sign in</button>
+                                <IconButton onClick={() => setShow(!show)} style={{
+                                    position: 'absolute',
+                                    right: '10px',
+                                    bottom: '0px',
+                                }}>
+                                    {!show ? <ShowIcon /> : <HideIcon />}
+                                </IconButton>
                             </Box>
                         </Box>
+                        <Grid container className={classes.linkArea}>
+                            <Grid item xs={12} lg={8}>
+                                <Box><Link to="/auth/reset" className="text-yellow text-16"><b><u>Forgot password?</u></b></Link></Box>
+                                <Box mt={1} mb={3} className="text-white text-16">Is this your first time? <Link to="/auth/signup" className="text-yellow"><b><u>Create an account</u></b></Link></Box>
+                            </Grid>
+                            <Grid item xs={12} lg={4} className="text-right">
+                                <button type="submit" className="text-16 primary-button">
+                                    <b>
+                                        {loading ? <CircularProgress size="1rem" style={{ color: "#FFFFFF" }} /> : "Login"}
+                                    </b>
+                                </button>
+                            </Grid>
+                        </Grid>
                     </form>
                 </Box>
-                <Box display="inline-flex" px={2} mb={1.5}>
-                    <Box component="span" className="copy">All rights reserved © 2020 STAR WARS</Box>
-                    <Box display="inline-block" ml="auto">
-                        <Box mr={5} component="span" className="copy">Privacy | Terms</Box>
-                        <Box component="span" className="copy">English <Box component="span" className="dropdown"></Box></Box>
-                    </Box>
-                </Box>
             </Grid>
-            <Hidden smDown>
-                <Grid item xs={0} md={3}>
-                </Grid>
-            </Hidden>
         </Grid>
     )
 }

@@ -6,6 +6,12 @@ import {
 let Theme = responsiveFontSizes(
     createMuiTheme(
         {
+            typography: {
+                fontFamily: [
+                    'Roobert',
+                    'sans-serif',
+                ].join(','),
+            },
             spacing: unit => unit * 8,
             breakpoints: {
                 values: {

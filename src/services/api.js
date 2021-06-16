@@ -1,57 +1,122 @@
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 
-const BASEURL = 'https://swapi.dev/api';
-const urls = {
-    vehicles: '/vehicles/',
-    films: '/films/',
-    starships: '/starships/',
-    people: '/people/',
-    species: '/species/',
-}
+axios.defaults.baseURL = 'https://ib-spin.herokuapp.com/v1.0/api'
 
-async function query(resource, page = null, search = null) {
+export const post = async (url, data, authorize = false) => {
+    let config = {
+        'Accept': 'application/json',
+        ...(authorize && { 'Authorization': `Bearer ` + localStorage.getItem("token") }),
+    };
     try {
-        let extra = "";
-        if (!page) {
-            page = 1;
-        }
-        extra += `page=${page}`
-        if (search) {
-            extra += `&search=${search}`;
-        }
-        const res = await axios.get(`${BASEURL}${urls[resource]}?${extra}`);
-        const { status, data } = res;
-        console.log(data)
+        const res = await axios.post(url, data, { headers: config });
         return {
-            status,
-            payload: data,
+            status: res.status,
+            data: res.data.data,
         };
-    } catch {
-        console.log(`Error while fetching resource ${resource}`);
+    } catch (err) {
+        console.log(`Error while posting to ${url}`);
+        const message = err.response.data.error.message;
         return {
-            status: 500,
-            data: {
-                error: 'We tried but caught an issue with the force',
-            },
-        };
-    }
-}
-
-async function queryX(resources) {
-    const requests = resources.map(resource => axios.get(BASEURL + urls[resource]));
-    try {
-        const responses = await axios.all(requests);
-        return responses;
-    } catch (e) {
-        console.log(`Error while fetching ${resources}`);
-        return {
-            status: 500,
-            data: {
-                error: 'We tried but caught an issue with the force',
-            },
+            status: err.response.status,
+            data: message
         };
     }
 }
 
 
-export { query, queryX };
+export const get = async (url, authorize = false, headers = null) => {
+    let config = {
+        'Accept': 'application/json',
+        ...(authorize && { 'Authorization': `Bearer ` + localStorage.getItem("token") }),
+        ...headers
+    };
+
+    try {
+        const res = await axios.get(url, { headers: config });
+        return {
+            status: res.status,
+            data: res.data.data,
+            result: res,
+        };
+    } catch (err) {
+        console.log(`Error while fetching to ${url}`);
+        const message = err.response.data.error.message;
+        return {
+            status: err.response.status,
+            data: message
+        };
+    }
+}
+
+export const del = async (url, authorize = false, headers = null) => {
+    let config = {
+        'Accept': 'application/json',
+        ...(authorize && { 'Authorization': `Bearer ` + localStorage.getItem("token") }),
+        ...headers
+    };
+
+    try {
+        const res = await axios.delete(url, { headers: config });
+        return {
+            status: res.status,
+            data: res.data.data,
+        };
+    } catch (err) {
+        console.log(`Error while fetching to ${url}`);
+        const message = err.response.data.error.message;
+        return {
+            status: err.response.status,
+            data: message
+        };
+    }
+}
+
+export const decodeToken = (token) => {
+    try {
+        const decoded = jwt_decode(token);
+        return decoded
+    } catch (err) {
+        return false;
+    }
+};
+
+export const isTokenValid = (token) => {
+    try {
+        const decoded = jwt_decode(token);
+        var d = new Date();
+        if (d.setDate(d.getDate()) >= decoded.exp * 1000) {
+            localStorage.clear('token');
+            return false;
+        } else {
+            return true;
+        }
+    } catch (err) {
+        return false;
+    }
+};
+
+export const setAuthToken = (token) => {
+    localStorage.setItem('token', token);
+    if (token) {
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    } else {
+        delete axios.defaults.headers.common.Authorization;
+    }
+};
+
+// async function queryX(resources) {
+//     const requests = resources.map(resource => axios.get(BASEURL + urls[resource]));
+//     try {
+//         const responses = await axios.all(requests);
+//         return responses;
+//     } catch (e) {
+//         console.log(`Error while fetching ${resources}`);
+//         return {
+//             status: 500,
+//             data: {
+//                 error: 'We tried but caught an issue with the force',
+//             },
+//         };
+//     }
+// }

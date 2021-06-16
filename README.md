@@ -1,20 +1,3 @@
-#  Max ng Assessment 
-Front End Engineer - Oladosu Abdullahi
-
-Click [Here](https://max-wars.herokuapp.com/) to view it.
-
-&nbsp; 
-
-&nbsp; 
-
-&nbsp; 
-
-&nbsp; 
-
-&nbsp; 
-
-&nbsp; 
-
 ## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
