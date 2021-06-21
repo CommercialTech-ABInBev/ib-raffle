@@ -139,7 +139,7 @@ function Wheel() {
             } else {
                 let index = gifts.findIndex(gift => gift.type === giftItem.type)
                 setPrize(gifts[index])
-                calculatePrize((index + 3) % gifts.length);
+                calculatePrize(index + 1);
             }
             return true;
         } else {
