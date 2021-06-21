@@ -131,26 +131,29 @@ function Wheel() {
     //     }
     // }
     const createSpin = async () => {
-        // dispatch({ type: "START_LOADING" });
         const response = await post("/createSpin", null, true);
         if (response.status === 201) {
             const giftItem = response.data.giftItem;
-            setPrize(giftItem);
             if (!giftItem) {
                 calculatePrize(gifts.length + 1);
             } else {
-                calculatePrize(1);
+                let index = gifts.findIndex(gift => gift.type === giftItem.type)
+                setPrize(gifts[index])
+                calculatePrize((index + 3) % gifts.length);
             }
+            return true;
         } else {
             setAlert(dispatch, "Error", response.data, "error");
+            return false;
         }
-        // dispatch({ type: "STOP_LOADING" });
     }
 
     async function handleStart() {
         // send the spin request at this point.
-        await createSpin();
-        canvasEl.current.startAnimation();
+        const canSpin = await createSpin();
+        if (canSpin) {
+            canvasEl.current.startAnimation();
+        }
     }
 
     window.handleFinish = function () {
@@ -203,10 +206,12 @@ function Wheel() {
             if (response.status === 200) {
 
                 const giftItems = response.data["giftItems"];
-                let wheelData = giftItems.map(giftItem => ({ 
+                let wheelData = giftItems.map(giftItem => ({
                     text: giftItem.type,
                     textFontSize: 20,
                     image: giftItem.image_url,
+                    type: giftItem.type,
+                    image_url: giftItem.image_url,
                 }))
                 setGifts(wheelData);
                 setupCanvas(wheelData);

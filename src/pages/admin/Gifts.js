@@ -157,7 +157,6 @@ function Gifts() {
             dispatch({ type: "START_LOADING" });
 
             const response = await get("/getGift", true);
-            debugger
             if (response.status === 200) {
                 const {
                     giftItems,
@@ -284,7 +283,7 @@ function Gifts() {
                                             </TableCell>
                                             <TableCell><Box className="text-16 text-grey70">{gift.totalSum}</Box></TableCell>
                                             <TableCell><Box className="text-16 text-grey70">{gift.issued} times</Box></TableCell>
-                                            <TableCell><Box className="text-16 text-grey70">{gift.outstanding} times</Box></TableCell>
+                                            <TableCell><Box className="text-16 text-grey70">{gift.outstanding}</Box></TableCell>
                                             <TableCell><Box className="text-16 text-grey70">{formatAMPM(gift.last_issued)}</Box></TableCell>
                                             <TableCell><IconButton onClick={(e) => handleOpen(e, gift)}><MoreIcon /> </IconButton></TableCell>
                                         </TableRow>

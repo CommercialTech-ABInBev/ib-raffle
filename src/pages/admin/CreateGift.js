@@ -107,7 +107,6 @@ function CreateGift() {
         const response = await post("/addGift", _formData, true, {
             'Content-Type': `multipart/form-data; boundary=${_formData._boundary}`,
         });
-        debugger
         if (response.status === 201) {
             setAlert(dispatch, "Success", "Gift created successfully", "success");
             setFormData(initialState);

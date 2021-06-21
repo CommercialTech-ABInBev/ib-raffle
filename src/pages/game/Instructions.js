@@ -106,22 +106,17 @@ function Instructions() {
                     <img src="/parrot.png" alt="parrot" className={classes.parrot} />
                     <Box className={clsx(classes.content, "bg-white text-red text-24")}>
                         <b>
-                            A picture is worth a thousand words!
-                            Except in this gallery, there are riddles on all of them.
-                            ound the photos to
-                            find one of the words you’ll need to unlock the answer!
+                            From the home page, click on "PLAY NOW" to navigate to the wheel.
+                            <br />
+                            Click on the green button in the middle of the wheel to spin.
+                            <br />
+                            Goodluck!
                         </b>
                         <br />
-                        <br />
-                        <b>
-                            A picture is worth a thousand words! Except in this gallery,
-                            there are riddles on all of them.
-                            You will need to jump around the photos.
-                        </b>
                     </Box>
                 </Box>
             </Grid>
-        </Grid>
+        </Grid >
     )
 }
 

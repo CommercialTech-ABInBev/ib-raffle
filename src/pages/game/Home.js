@@ -56,17 +56,16 @@ function Home() {
     const classes = useStyles();
     const [state, dispatch] = useContext(AppContext);
     const [loading, setLoading] = useState(false);
-    const [spinData, setSpinData] = useState(false);
+    const [spinData, setSpinData] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             dispatch({ type: "START_LOADING" });
-            
+
             const response = await get("/userSpinCheck", true);
             if (response.status === 200) {
-                const { authUserSpinData } = response.data;
-                setSpinData(authUserSpinData);
+                setSpinData(response.data);
             } else {
                 setAlert(dispatch, "Error", response.data, "error");
             }
@@ -87,7 +86,6 @@ function Home() {
         return <></>;
     }
 
-
     return (
         <Grid container justify="center" className={classes.root}>
             <Grid item xs={12} sm={8} md={5}>
@@ -96,12 +94,12 @@ function Home() {
                         <img src="/spin-to-win.png" alt="spin to win logo" width="240" />
                     </Box>
                     <Box className="text-yellow text-28 heavy mb-5">{state.username}</Box>
-                    {spinData ?
+                    { spinData?.haveSpunned ?
                         <>
                             <Link to={{
                                 pathname: '/result',
                                 state: {
-                                    data: spinData,
+                                    data: spinData.item,
                                 },
                             }} className="d-inline-block primary-button text-16 mb-5">
                                 <b>MY PRIZE</b>

@@ -131,7 +131,7 @@ function Login() {
                         </Box>
                         <Grid container className={classes.linkArea}>
                             <Grid item xs={12} lg={8}>
-                                <Box><Link to="/auth/reset" className="text-yellow text-16"><b><u>Forgot password?</u></b></Link></Box>
+                                {/* <Box><Link to="/auth/reset" className="text-yellow text-16"><b><u>Forgot password?</u></b></Link></Box> */}
                                 <Box mt={1} mb={3} className="text-white text-16">Is this your first time? <Link to="/auth/signup" className="text-yellow"><b><u>Create an account</u></b></Link></Box>
                             </Grid>
                             <Grid item xs={12} lg={4} className="text-right">
