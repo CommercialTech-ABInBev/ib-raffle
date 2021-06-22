@@ -102,7 +102,7 @@ function CreateGift() {
         _formData.append('file', formData.image);
         _formData.append('type', formData.type);
         _formData.append('quantity', formData.quantity);
-        // _formData.append('country', formData.country);
+        _formData.append('country', formData.country);
 
         const response = await post("/addGift", _formData, true, {
             'Content-Type': `multipart/form-data; boundary=${_formData._boundary}`,
