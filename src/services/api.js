@@ -1,7 +1,9 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-axios.defaults.baseURL = 'https://ib-spin.herokuapp.com/v1.0/api'
+const { REACT_APP_API_URL } = process.env;
+
+axios.defaults.baseURL = REACT_APP_API_URL;
 
 export const post = async (url, data, authorize = false, headers = null) => {
     let config = {

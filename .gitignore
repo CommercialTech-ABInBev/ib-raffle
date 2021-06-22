@@ -10,6 +10,7 @@
 
 # production
 /build
+/ibspin
 
 # misc
 .DS_Store
