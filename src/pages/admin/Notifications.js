@@ -22,7 +22,7 @@ function Notifications() {
     const [notifications, setNotifications] = useState(null);
 
     useEffect(() => {
-        const fetchGifts = async () => {
+        const fetchNotifications = async () => {
             setLoading(true);
             dispatch({ type: "START_LOADING" });
             
@@ -37,7 +37,7 @@ function Notifications() {
             setLoading(false);
         }
 
-        fetchGifts();
+        fetchNotifications();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
