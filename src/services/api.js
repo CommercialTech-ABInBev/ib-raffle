@@ -3,12 +3,13 @@ import jwt_decode from 'jwt-decode';
 
 const { REACT_APP_API_URL } = process.env;
 
-axios.defaults.baseURL = REACT_APP_API_URL;
+axios.defaults.baseURL = `${REACT_APP_API_URL}/v1.0/api`;
 
 export const post = async (url, data, authorize = false, headers = null) => {
+    
     let config = {
         'Accept': 'application/json',
-        ...(authorize && { 'Authorization': `Bearer ` + localStorage.getItem("token") }),
+        // ...(authorize && { 'Authorization': `Bearer ` + document.cookie.token }),
         ...headers
     };
     try {
@@ -19,9 +20,9 @@ export const post = async (url, data, authorize = false, headers = null) => {
         };
     } catch (err) {
         console.log(`Error while posting to ${url}`);
-        const message = err.response.data.error.message;
+        let message = err.isAxiosError ? err.message : err.response.data.error.message;
         return {
-            status: err.response.status,
+            status: err.response?.status,
             data: message
         };
     }
@@ -29,9 +30,10 @@ export const post = async (url, data, authorize = false, headers = null) => {
 
 
 export const get = async (url, authorize = false, headers = null) => {
+    
     let config = {
         'Accept': 'application/json',
-        ...(authorize && { 'Authorization': `Bearer ` + localStorage.getItem("token") }),
+        // ...(authorize && { 'Authorization': `Bearer ` + document.cookie.token }),
         ...headers
     };
 
@@ -44,18 +46,19 @@ export const get = async (url, authorize = false, headers = null) => {
         };
     } catch (err) {
         console.log(`Error while fetching to ${url}`);
-        const message = err.response.data.error.message;
+        let message = err.isAxiosError ? err.message : err.response.data.error.message;
         return {
-            status: err.response.status,
+            status: err.response?.status,
             data: message
         };
     }
 }
 
 export const del = async (url, authorize = false, headers = null) => {
+    
     let config = {
         'Accept': 'application/json',
-        ...(authorize && { 'Authorization': `Bearer ` + localStorage.getItem("token") }),
+        // ...(authorize && { 'Authorization': `Bearer ` + document.cookie.token }),
         ...headers
     };
 
@@ -67,29 +70,34 @@ export const del = async (url, authorize = false, headers = null) => {
         };
     } catch (err) {
         console.log(`Error while fetching to ${url}`);
-        const message = err.response.data.error.message;
+        let message = err.isAxiosError ? err.message : err.response.data.error.message;
         return {
-            status: err.response.status,
+            status: err.response?.status,
             data: message
         };
     }
 }
 
+
 export const decodeToken = (token) => {
     try {
         const decoded = jwt_decode(token);
+        
         return decoded
     } catch (err) {
         return false;
     }
 };
 
+
 export const isTokenValid = (token) => {
+    
+    if (!token) return false;
     try {
         const decoded = jwt_decode(token);
         var d = new Date();
         if (d.setDate(d.getDate()) >= decoded.exp * 1000) {
-            localStorage.clear('token');
+            document.cookie = "";
             return false;
         } else {
             return true;

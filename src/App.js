@@ -18,6 +18,7 @@ import Auth from './routes/Auth';
 import Game from './routes/Game';
 
 function App() {
+
   return (
     <AppProvider>
       <ThemeProvider theme={theme}>

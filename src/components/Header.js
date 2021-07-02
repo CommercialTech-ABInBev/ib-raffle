@@ -80,7 +80,6 @@ function Header() {
   }
 
   const handleLogout = () => {
-    localStorage.clear("token");
     dispatch({ type: "LOGOUT" });
   }
 

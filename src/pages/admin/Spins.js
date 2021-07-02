@@ -110,11 +110,10 @@ function Spins() {
         return <></>;
     }
 
-    const totalSpins = spinData ? spinData.totalSpin : '-';
-    const totalWins = spinData ? spinData.wins : '-';
-    const totalLosses = spinData ? spinData.loses : '-';
-    const spins = spinData ? spinData.spins : null;
-
+    const totalSpins = spinData?.totalSpin;
+    const totalWins = spinData?.wins;
+    const totalLosses = spinData?.loses;
+    const spins = spinData?.spins;
 
     return (
         <Container maxWidth="lg">
@@ -124,21 +123,21 @@ function Spins() {
                         <Box className={clsx(classes.statBox, classes.bgBrown)}>
                             <WheelIconLarge />
                             <Box mt={2}>Total Spins</Box>
-                            <Box mt={1} className={classes.figure}>{totalSpins}</Box>
+                            <Box mt={1} className={classes.figure}>{totalSpins??"-"}</Box>
                         </Box>
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <Box className={clsx(classes.statBox, classes.bgRed)}>
                             <TrophyIconLarge />
                             <Box mt={2}>Wins</Box>
-                            <Box mt={1} className={classes.figure}>{totalWins}</Box>
+                            <Box mt={1} className={classes.figure}>{totalWins ?? "-"}</Box>
                         </Box>
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         <Box className={clsx(classes.statBox, classes.bgBlue)}>
                             <LossesIconLarge />
                             <Box mt={2}>Losses</Box>
-                            <Box mt={1} className={classes.figure}>{totalLosses}</Box>
+                            <Box mt={1} className={classes.figure}>{totalLosses ?? "-"}</Box>
                         </Box>
                     </Grid>
                 </Grid>

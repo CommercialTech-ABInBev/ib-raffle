@@ -57,6 +57,7 @@ function Home() {
     const [state, dispatch] = useContext(AppContext);
     const [loading, setLoading] = useState(false);
     const [spinData, setSpinData] = useState(null);
+    const [error, setError] = useState("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -67,6 +68,7 @@ function Home() {
             if (response.status === 200) {
                 setSpinData(response.data);
             } else {
+                setError(response.data);
                 setAlert(dispatch, "Error", response.data, "error");
             }
             dispatch({ type: "STOP_LOADING" });
@@ -78,7 +80,6 @@ function Home() {
     }, []);
 
     const handleLogout = () => {
-        localStorage.clear("token");
         dispatch({ type: "LOGOUT" });
     }
 
@@ -94,26 +95,26 @@ function Home() {
                         <img src="/spin-to-win.png" alt="spin to win logo" width="240" />
                     </Box>
                     <Box className="text-yellow text-28 heavy mb-5">{state.username}</Box>
-                    { spinData?.haveSpunned ?
-                        <>
-                            <Link to={{
-                                pathname: '/result',
-                                state: {
-                                    data: spinData.item,
-                                },
-                            }} className="d-inline-block primary-button text-16 mb-5">
-                                <b>MY PRIZE</b>
-                            </Link>
-                            <br />
-                        </>
-                        :
-                        <>
-                            <Link to="/spin" className="d-inline-block primary-button text-16 mb-5">
-                                <b>PLAY NOW</b>
-                            </Link>
-                            <br />
-                        </>
-                    }
+                    <>
+                        {error ?
+                            <p className="text-white"><b>{error === "Network Error" ? "Are you connected to the internet?" : error}</b></p>
+                            :
+                            spinData?.haveSpunned ?
+                                <Link to={{
+                                    pathname: '/result',
+                                    state: {
+                                        data: spinData.item,
+                                    },
+                                }} className="d-inline-block primary-button text-16 mb-5">
+                                    <b>MY PRIZE</b>
+                                </Link>
+                                :
+                                <Link to="/spin" className="d-inline-block primary-button text-16 mb-5">
+                                    <b>PLAY NOW</b>
+                                </Link>
+                        }
+                        <br />
+                    </>
                     <Link to="/instructions" className="d-inline-block primary-button text-16 mb-5">
                         <b>SEE INSTRUCTIONS</b>
                     </Link>

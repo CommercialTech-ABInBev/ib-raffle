@@ -4,15 +4,16 @@ import { v4 as uuidv4 } from 'uuid';
 import { isTokenValid, decodeToken, setAuthToken } from "./services/api";
 
 export const AppContext = createContext();
-let token = null;
 
 const loadState = (token) => {
+
+    setAuthToken(token);
     const tokenData = decodeToken(token);
     return ({
         alerts: [],
         username: tokenData.email,
-        isAdmin: tokenData.isAdmin === "1",
-        isAuthenticated: isTokenValid(token),
+        isAdmin: tokenData.isAdmin,
+        isAuthenticated: true,
         loading: false,
         error: null,
     });
@@ -50,15 +51,7 @@ export const setAlert = (dispatch, title, body, type, timeout = 2000) => {
 const AppReducer = (state, action) => {
     switch (action.type) {
         case "LOAD_USER":
-            token = localStorage.getItem('token');
-            setAuthToken(token);
-            return { ...state, ...(loadState(token)) };
-
-        case "LOGIN":
-            token = action.payload;
-            setAuthToken(token);
-            localStorage.setItem('token', token);
-            return { ...state, ...(loadState(token)) };
+            return { ...state, ...(loadState(action.payload)) };
 
         // LOADER
         case "START_LOADING":
@@ -77,6 +70,7 @@ const AppReducer = (state, action) => {
             return { ...state, alerts: [] };
 
         case "LOGOUT":
+            document.cookie = "";
             delete axios.defaults.headers.common.Authorization;
             return {
                 isAuthenticated: false,
@@ -97,7 +91,12 @@ export function AppProvider(props) {
     const [state, dispatch] = useReducer(AppReducer, initialState);
 
     useEffect(() => {
-        dispatch({ type: "LOAD_USER" });
+        let token = document.cookie.split("=")[1];
+        if (isTokenValid(token)) {
+            dispatch({ type: "LOAD_USER", payload: token });
+        } else {
+            dispatch({ type: "LOGOUT" });
+        }
     }, []);
 
     return (
