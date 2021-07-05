@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, createContext } from "react";
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { isTokenValid, decodeToken, setAuthToken } from "./services/api";
+import { deleteCookie, isTokenValid, decodeToken, setAuthToken } from "./services/api";
 
 export const AppContext = createContext();
 
@@ -70,7 +70,7 @@ const AppReducer = (state, action) => {
             return { ...state, alerts: [] };
 
         case "LOGOUT":
-            document.cookie = "";
+            deleteCookie("token");
             delete axios.defaults.headers.common.Authorization;
             return {
                 isAuthenticated: false,

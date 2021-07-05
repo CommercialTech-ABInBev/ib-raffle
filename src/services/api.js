@@ -9,7 +9,6 @@ export const post = async (url, data, authorize = false, headers = null) => {
     
     let config = {
         'Accept': 'application/json',
-        // ...(authorize && { 'Authorization': `Bearer ` + document.cookie.token }),
         ...headers
     };
     try {
@@ -33,7 +32,6 @@ export const get = async (url, authorize = false, headers = null) => {
     
     let config = {
         'Accept': 'application/json',
-        // ...(authorize && { 'Authorization': `Bearer ` + document.cookie.token }),
         ...headers
     };
 
@@ -58,7 +56,6 @@ export const del = async (url, authorize = false, headers = null) => {
     
     let config = {
         'Accept': 'application/json',
-        // ...(authorize && { 'Authorization': `Bearer ` + document.cookie.token }),
         ...headers
     };
 
@@ -113,4 +110,8 @@ export const setAuthToken = (token) => {
     } else {
         delete axios.defaults.headers.common.Authorization;
     }
+};
+
+export const deleteCookie = (name) => {
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/;";
 };
