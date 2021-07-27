@@ -30,7 +30,17 @@
      -moz-osx-font-smoothing: grayscale;
      font-size: 16px !important;
      box-sizing: border-box;
-     background-color: #F6F8FB;
+ }
+
+ h1,
+ h2,
+ h3,
+ h4,
+ h5,
+ h6,
+ p {
+     margin: 0;
+     padding: 0;
  }
 
  select {
@@ -44,13 +54,28 @@
      background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
      background-repeat: no-repeat;
      background-position-x: calc(100% - 12px);
-     background-position-y: 6px;
+     background-position-y: calc(100% - 12px);
      border-radius: 4px;
      border: 1px solid rgba(49, 45, 44, 0.6);
      background-color: transparent;
-     height: 40px;
+     height: 50px !important;
      font-weight: 500;
+     padding-top: 10px !important;
+     padding-bottom: 10px !important;
      padding-left: 16px;
+ }
+
+ select:focus {
+     border-color: #F49C00;
+     background-color: transparent;
+ }
+
+ select:not(:focus):valid {
+     background-color: #EFECE9;
+ }
+
+ select:disabled {
+     background-color: #EFECE9;
  }
 
  a {
@@ -81,12 +106,20 @@
      font-size: 1.75rem;
  }
 
+ .text-32 {
+     font-size: 2rem;
+ }
+
  .text-40 {
      font-size: 2.5rem;
  }
 
  .text-48 {
      font-size: 3rem;
+ }
+
+ .text-56 {
+     font-size: 3.5rem;
  }
 
  .bold {
@@ -107,6 +140,14 @@
 
  .text-red {
      color: #B11F24;
+ }
+
+ .text-dark-brown {
+     color: #431512;
+ }
+
+ .text-dark-brown-2 {
+     color: #462525;
  }
 
  .text-brown {
@@ -193,6 +234,23 @@
      text-align: center;
      padding: 1rem !important;
      color: #ffffff !important;
+ }
+
+
+ .tag {
+     display: flex;
+     flex-direction: row;
+     align-items: flex-start;
+     background: #FFF5D6;
+     border: 12px solid #613633;
+     box-shadow: 0px 4px 22px rgba(0, 0, 0, 0.05);
+     border-radius: 200px;
+     padding: 4px 35px;
+ }
+
+ .tag-large {
+     padding: 32px 56px;
+     border-width: 24px;
  }
 
  .btn-primary:disabled {
@@ -379,6 +437,10 @@
      margin-right: auto;
  }
 
+ .mb-0 {
+     margin-bottom: 0;
+ }
+
  .mb-5 {
      margin-bottom: 2.5rem;
  }
@@ -396,6 +458,10 @@
      background-color: #ffffff;
  }
 
+ .d-block {
+     display: block;
+ }
+
  .d-inline-block {
      display: inline-block;
  }
@@ -404,6 +470,27 @@
      display: inline;
  }
 
+ .img-fluid {
+     width: 100%;
+     height: auto;
+ }
+
+ .spinner-anim {
+     animation-name: spin;
+     animation-duration: 5000ms;
+     animation-iteration-count: infinite;
+     animation-timing-function: linear;
+ }
+
+ @keyframes spin {
+     from {
+         transform: rotate(0deg);
+     }
+
+     to {
+         transform: rotate(360deg);
+     }
+ }
 
  @media only screen and (max-width: 960px) {
      .text-48 {

@@ -1,7 +1,16 @@
-import React, { useEffect, useReducer, createContext } from "react";
+import React, { 
+    useEffect, 
+    useReducer, 
+    createContext 
+} from "react";
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { deleteCookie, isTokenValid, decodeToken, setAuthToken } from "./services/api";
+import { 
+    deleteCookie, 
+    isTokenValid, 
+    decodeToken, 
+    setAuthToken 
+} from "./services/api";
 
 export const AppContext = createContext();
 
@@ -12,7 +21,6 @@ const loadState = (token) => {
     return ({
         alerts: [],
         username: tokenData.email,
-        isAdmin: tokenData.isAdmin,
         isAuthenticated: true,
         loading: false,
         error: null,
@@ -22,7 +30,6 @@ const loadState = (token) => {
 const initialState = {
     alerts: [],
     username: null,
-    isAdmin: false,
     isAuthenticated: false,
     loading: false,
     error: null,
@@ -75,7 +82,6 @@ const AppReducer = (state, action) => {
             return {
                 isAuthenticated: false,
                 alerts: [],
-                isAdmin: false,
                 username: null,
                 error: null,
                 loading: null,
@@ -89,9 +95,9 @@ const AppReducer = (state, action) => {
 
 export function AppProvider(props) {
     const [state, dispatch] = useReducer(AppReducer, initialState);
-
     useEffect(() => {
         let token = document.cookie.split("=")[1];
+        debugger
         if (isTokenValid(token)) {
             dispatch({ type: "LOAD_USER", payload: token });
         } else {

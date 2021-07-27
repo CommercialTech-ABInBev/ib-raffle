@@ -1,10 +1,10 @@
 import {
-    createMuiTheme,
+    createTheme,
     responsiveFontSizes
 } from '@material-ui/core/styles';
 
 let Theme = responsiveFontSizes(
-    createMuiTheme(
+    createTheme(
         {
             typography: {
                 fontFamily: [

@@ -8,11 +8,11 @@ import MobileMenu from './MobileMenu';
 
 import { AppContext } from '../Provider';
 import {
-GiftIcon,
+  GiftIcon,
   HomeIcon,
   PeopleIcon,
-  BellIcon,
-  WheelIcon,
+  // BellIcon,
+  // WheelIcon,
   Hamburger,
 } from '../assets/icons';
 
@@ -107,13 +107,12 @@ function Header() {
           <PeopleIcon fill={getColor("/admin/winners")} />
           <span>Winners</span>
         </Link>
-        <Link to="/admin/spins" className={clsx(classes.navItem, isActive("/admin/spins") && "active")}>
+        {/* <Link to="/admin/spins" className={clsx(classes.navItem, isActive("/admin/spins") && "active")}>
           <WheelIcon stroke={getColor("/admin/spins")} />
           <span>Spins</span>
-        </Link>
-        <Link to="/admin/notifications" className={clsx(classes.navItem, 'ml-auto', isActive("/admin/notifications") && "active")}>
-          <BellIcon fill={getColor("/admin/notifications")} />
-          <span>Notifications</span>
+        </Link> */}
+        <Link to="/" className={clsx(classes.navItem, 'ml-auto', isActive("/", true) && "active")}>
+          <span>Go to user side</span>
         </Link>
         <button type="button" onClick={handleLogout} className={clsx(classes.navItem)}>
           Logout

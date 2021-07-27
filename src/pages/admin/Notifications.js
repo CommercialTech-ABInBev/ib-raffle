@@ -20,8 +20,8 @@ function Notifications() {
     const [, dispatch] = useContext(AppContext);
     const [loading, setLoading] = useState(false);
     const [notifications, setNotifications] = useState(null);
-
     useEffect(() => {
+        // eslint-disable-next-line no-unused-vars
         const fetchNotifications = async () => {
             setLoading(true);
             dispatch({ type: "START_LOADING" });
@@ -37,7 +37,8 @@ function Notifications() {
             setLoading(false);
         }
 
-        fetchNotifications();
+        // Uncomment this
+        // fetchNotifications();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

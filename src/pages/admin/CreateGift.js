@@ -70,8 +70,7 @@ function CreateGift() {
     const [, dispatch] = useContext(AppContext);
     const initialState = {
         type: '',
-        quantity: '',
-        country: 'Nigeria',
+        quantity: 1,
         preview: null,
         image: null,
     };
@@ -95,14 +94,13 @@ function CreateGift() {
     }
 
     const handleCreate = async () => {
-        
+
         dispatch({ type: "START_LOADING" });
 
         let _formData = new FormData();
         _formData.append('file', formData.image);
         _formData.append('type', formData.type);
         _formData.append('quantity', formData.quantity);
-        _formData.append('country', formData.country);
 
         const response = await post("/addGift", _formData, true, {
             'Content-Type': `multipart/form-data; boundary=${_formData._boundary}`,
@@ -116,7 +114,11 @@ function CreateGift() {
         dispatch({ type: "STOP_LOADING" });
     }
 
-    const formComplete = formData.type && formData.quantity && formData.country && formData.image && formData.preview;
+    const formComplete = formData.type
+        && formData.quantity
+        && (formData.quantity > 0)
+        && formData.image
+        && formData.preview;
 
     return (
         <Container maxWidth="sm">
@@ -131,22 +133,22 @@ function CreateGift() {
                 ><BackIconLarge fill="#B11F24" stroke="#B11F24" /></Link>
             </Box>
             <Box mt={5}>
-                <Box mb={1} className="text-14">Enter Gift Name</Box>
-                <input
-                    name="type"
-                    type="text"
-                    className={[classes.inputBox]}
-                    placeholder="TV set, Microwave or others"
-                    value={formData.type}
-                    onChange={handleChange}
-                    required
-                />
+                <Box mb={1} className="text-14">Choose a Gift Type</Box>
+                <select name="type" value={formData.type} onChange={handleChange}>
+                    <option value="" disabled>Select</option>
+                    <option value="Laptop">Laptop</option>
+                    <option value="Television">Television</option>
+                    <option value="Smartphone">Smartphone</option>
+                    <option value="Voucher $100">Voucher $100</option>
+                    <option value="Voucher $50">Voucher $50</option>
+                </select>
             </Box>
             <Box mt={5}>
                 <Box mb={1} className="text-14">Enter Gift's Starting Quantity</Box>
                 <input
                     name="quantity"
                     type="number"
+                    min={1}
                     className={[classes.inputBox]}
                     placeholder="Enter quantity"
                     value={formData.quantity}
@@ -188,13 +190,6 @@ function CreateGift() {
                         </>
                     }
                 </Box>
-            </Box>
-            <Box mt={5}>
-                <Box mb={1} className="text-14">Location</Box>
-                <select name="country" value={formData.country} onChange={handleChange}>
-                    <option value="nigeria">Nigeria</option>
-                    <option value="ghana">Ghana</option>
-                </select>
             </Box>
             <Box mt={5} mb={10}>
                 <ButtonBase disabled={!formComplete} onClick={handleCreate} className="full-width btn-primary">

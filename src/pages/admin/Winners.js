@@ -47,10 +47,10 @@ function Winners() {
         const fetchWinners = async () => {
             setLoading(true);
             dispatch({ type: "START_LOADING" });
-            const response = await get("/spinWinners", true);
+            const response = await get("/winners", true);
             if (response.status === 200) {
-                const spinWinners = response.data["spinWinners"];
-                setWinners(spinWinners);
+                const _winners = response.data["winners"];
+                setWinners(_winners);
             } else {
                 setAlert(dispatch, "Error", response.data, "error");
             }
@@ -93,14 +93,14 @@ function Winners() {
                                     <TableRow key={`winner-${winner.id}`}>
                                         <TableCell component="th" scope="row"><Box className="text-16 text-grey70">{winner.name}</Box></TableCell>
                                         <TableCell><Box className="text-16 text-grey70">{winner.email}</Box></TableCell>
-                                        <TableCell><Box className="text-16 text-grey70">{winner.result}</Box></TableCell>
-                                        <TableCell><Box className="text-16 text-grey70">{formatAMPM(winner.spin_date)}</Box></TableCell>
+                                        <TableCell><Box className="text-16 text-grey70">{winner.itemWon}</Box></TableCell>
+                                        <TableCell><Box className="text-16 text-grey70">{formatAMPM(winner.dateWon)}</Box></TableCell>
                                     </TableRow>
                                 )
                             })}
                         </TableBody>
                     </Table>
-                    {winners && winners.length === 0 && <Box className="text-14 text-grey70 text-center" my={3} textAlign="center">There are currently no winners</Box>}
+                    {!(winners && winners.length > 0) && <Box className="text-14 text-grey70 text-center" my={3} textAlign="center">There are currently no winners</Box>}
                 </TableContainer>
             </Box>
         </Container>

@@ -124,7 +124,7 @@ function Gifts() {
     const [gridView, setGridView] = useState(false);
     const [gifts, setGifts] = useState(null);
     const [stats, setStats] = useState({
-        totalGiftItems: null,
+        totalGifts: null,
         totalGiftsIssued: null,
         totalOutstandingGifts: null,
     });
@@ -152,21 +152,23 @@ function Gifts() {
     }
 
     useEffect(() => {
+        // eslint-disable-next-line no-unused-vars
         const fetchGifts = async () => {
             setLoading(true);
             dispatch({ type: "START_LOADING" });
 
             const response = await get("/getGift", true);
             if (response.status === 200) {
+                const { data } = response.data;
                 const {
-                    giftItems,
-                    totalGiftItems,
+                    gifts: giftItems,
+                    totalGifts,
                     totalGiftsIssued,
                     totalOutstandingGifts
-                } = response.data;
+                } = data;
 
                 setGifts(giftItems);
-                setStats({ totalGiftItems, totalGiftsIssued, totalOutstandingGifts });
+                setStats({ totalGifts, totalGiftsIssued, totalOutstandingGifts });
             } else {
                 setAlert(dispatch, "Error", response.data, "error");
             }
@@ -196,7 +198,7 @@ function Gifts() {
                         <Box className={clsx(classes.statBox, classes.bgBrown)}>
                             <GiftIconLarge />
                             <Box mt={2}>Total Gifts</Box>
-                            <Box mt={1} className={classes.figure}>{stats.totalGiftItems ?? '-'}</Box>
+                            <Box mt={1} className={classes.figure}>{stats.totalGifts ?? '-'}</Box>
                         </Box>
                     </Grid>
                     <Grid item xs={12} sm={4}>
@@ -243,10 +245,10 @@ function Gifts() {
                                             <Box className="center-y">
                                                 <Share /><Box className="text-brown-light text-14" ml={.5}>Issued</Box>
                                             </Box>
-                                            <Box mt={1} className="text-24 text-brown"><b>{gift.issued}</b></Box>
-                                            <Box mt={2} className="center-y">
+                                            <Box mt={1} className="text-24 text-brown"><b>{gift.issued? "YES" : "NO"}</b></Box>
+                                            {/* <Box mt={2} className="center-y">
                                                 <Discovery /><Box className="text-brown-light text-14" ml={.5}>Outstanding</Box>
-                                            </Box>
+                                            </Box> */}
                                             <Box mt={1} className="text-24 text-brown"><b>{gift.outstanding}</b></Box>
                                         </Box>
                                         <Hidden xsDown>
@@ -265,7 +267,7 @@ function Gifts() {
                                     <TableCell><Box className="text-18 text-black">Gift Type</Box></TableCell>
                                     <TableCell><Box className="text-18 text-black">Starting Quantity</Box></TableCell>
                                     <TableCell><Box className="text-18 text-black">Issued</Box></TableCell>
-                                    <TableCell><Box className="text-18 text-black">Outstanding</Box></TableCell>
+                                    {/* <TableCell><Box className="text-18 text-black">Outstanding</Box></TableCell> */}
                                     <TableCell><Box className="text-18 text-black">Date Last Issued</Box></TableCell>
                                     <TableCell></TableCell>
                                 </TableRow>
@@ -273,25 +275,25 @@ function Gifts() {
                             <TableBody>
                                 {gifts && gifts.map((gift, index) => {
                                     return (
-                                        <TableRow key={`gift-${gift.type}-${gift.totalSum}-${index}`}>
+                                        <TableRow key={`gift-${gift.type}-${gift.quantity}-${index}`}>
                                             <TableCell component="th" scope="row">
                                                 <Box className={classes.giftBox}>
-                                                    <img alt="gift" src={gift.image_url} style={{ width: 88, height: 48 }} />
+                                                    <img alt="gift" src={gift.image_url} style={{ width: 88, height: 48, objectFit: 'cover' }} />
                                                     {/* <img src='https://placehold.it/88x48?text=image' alt='' /> */}
                                                     <Box className="text-16 text-brown">{gift.type}</Box>
                                                 </Box>
                                             </TableCell>
-                                            <TableCell><Box className="text-16 text-grey70">{gift.totalSum}</Box></TableCell>
-                                            <TableCell><Box className="text-16 text-grey70">{gift.issued}</Box></TableCell>
-                                            <TableCell><Box className="text-16 text-grey70">{gift.outstanding}</Box></TableCell>
-                                            <TableCell><Box className="text-16 text-grey70">{formatAMPM(gift.last_issued)}</Box></TableCell>
+                                            <TableCell><Box className="text-16 text-grey70">{gift.quantity}</Box></TableCell>
+                                            <TableCell><Box className="text-16 text-grey70">{gift.issued? "YES" : "NO"}</Box></TableCell>
+                                            {/* <TableCell><Box className="text-16 text-grey70">{gift.outstanding}</Box></TableCell> */}
+                                            <TableCell><Box className="text-16 text-grey70">{formatAMPM(gift.updatedAt)}</Box></TableCell>
                                             <TableCell><IconButton onClick={(e) => handleOpen(e, gift)}><MoreIcon /> </IconButton></TableCell>
                                         </TableRow>
                                     )
                                 })}
                             </TableBody>
                         </Table>
-                        {gifts && gifts.length === 0 && <Box className="text-14 text-grey70 text-center" my={3} textAlign="center">There are currently no gifts</Box>}
+                        {!(gifts && gifts.length > 0) && <Box className="text-14 text-grey70 text-center" my={3} textAlign="center">There are currently no gifts</Box>}
                     </TableContainer>
                 }
             </Box>
@@ -335,7 +337,7 @@ function Gifts() {
                         Are you sure you want to
                         Delete this Gift?
                     </Box>
-                    <Grid container spacing={3} justify="center">
+                    <Grid container spacing={3} justifyContent="center">
                         <Grid item>
                             <ButtonBase onClick={() => handleDelete()}>
                                 <Box p={1} className="text-link">

@@ -78,11 +78,11 @@ const MobileMenu = ({ open, closeMenu, logout }) => {
             <Link to="/admin/winners" onClick={closeMenu} className={clsx(classes.navItem, isActive("/admin/winners") && "active")}>
                 <span>Winners</span>
             </Link>
-            <Link to="/admin/spins" onClick={closeMenu} className={clsx(classes.navItem, isActive("/admin/spins") && "active")}>
+            {/* <Link to="/admin/spins" onClick={closeMenu} className={clsx(classes.navItem, isActive("/admin/spins") && "active")}>
                 <span>Spins</span>
-            </Link>
-            <Link to="/admin/notifications" onClick={closeMenu} className={clsx(classes.navItem, isActive("/admin/notifications") && "active")}>
-                <span>Notifications</span>
+            </Link> */}
+            <Link to="/" onClick={closeMenu} className={clsx(classes.navItem, isActive("/", true) && "active")}>
+                <span>Go to user side</span>
             </Link>
             <Box textAlign="center">
                 <button type="button" onClick={() => { closeMenu(); logout() }} className={clsx('d-inline text-red text-link')}>

@@ -14,8 +14,8 @@ import LoadingBar from './components/LoadingBar';
 import theme from './theme';
 
 import Admin from './routes/Admin';
-import Auth from './routes/Auth';
-import Game from './routes/Game';
+import Raffle from './routes/Raffle';
+import Login from './pages/Login';
 
 function App() {
 
@@ -27,9 +27,9 @@ function App() {
           <ToastNotifications />
           <Router>
             <Switch>
-              <Route isPrivate adminOnly path="/admin" component={Admin} />
-              <Route path="/auth" component={Auth} />
-              <Route isPrivate userOnly path="/" component={Game} />
+              <Route path="/login" component={Login} />
+              <Route isPrivate path="/admin" component={Admin} />
+              <Route isPrivate path="/" component={Raffle} />
             </Switch>
           </Router>
         </ToastProvider>
