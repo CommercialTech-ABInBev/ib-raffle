@@ -97,7 +97,6 @@ export function AppProvider(props) {
     const [state, dispatch] = useReducer(AppReducer, initialState);
     useEffect(() => {
         let token = document.cookie.split("=")[1];
-        debugger
         if (isTokenValid(token)) {
             dispatch({ type: "LOAD_USER", payload: token });
         } else {
