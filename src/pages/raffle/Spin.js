@@ -6,7 +6,7 @@ import {
     Container,
     makeStyles,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { AppContext, setAlert } from '../../Provider';
 import {
     get,
@@ -15,6 +15,7 @@ import {
 import Wheel from '../../components/Wheel';
 import Footer from '../../components/Footer';
 import SpinNotice from '../../components/SpinNotice';
+import HomeIcon from '@material-ui/icons/Home';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -32,6 +33,7 @@ const useStyles = makeStyles(theme => ({
 
 function Spin() {
     const classes = useStyles();
+    const history = useHistory();
     const [gifts, setGifts] = useState(null);
     const [spinning, setSpinning] = useState(false);
     const [completed, setCompleted] = useState(false);
@@ -61,6 +63,11 @@ function Spin() {
 
     return (
         <Box className={classes.root}>
+            <Box position="fixed" top="20px" left="20px">
+                <IconButton onClick={() => history.push('/')}>
+                    <HomeIcon />
+                </IconButton>
+            </Box>
             <Container maxWidth="lg" className={classes.container}>
                 <Grid container direction={started ? "column" : "row"} justifyContent="center" alignItems="center">
                     <Grid item xs={12} sm={6}>

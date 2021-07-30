@@ -11,7 +11,7 @@ import { Redirect, Link } from 'react-router-dom';
 import Typing from 'react-typing-animation';
 import { get } from '../../services/api';
 
-const soundFile = require('../../assets/music/trimmed_stftc.m4a').default;
+const soundFile = require('../../assets/music/Stand_Up_For_The_Champions.mp3').default;
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -110,17 +110,20 @@ function Winners({ location }) {
                 {!loading && (
                     <>
                         <Box mb={3} className="text-center">
-                            <Box className="text-56 text-dark-brown">
-                                <b>{finished ? 'Congratulations to  all winners' : 'Winners'}</b>
+                            <Box className="text-40 text-dark-brown">
+                                <b>{finished ?
+                                    <span>Congratulations to  all winners of <span className="text-red">{prize.type}</span></span> : 'Winners'}
+                                </b>
                             </Box>
                         </Box>
                         <Grid container alignItems="center" justifyContent={finished ? "space-evenly" : "space-between"} className={classes.main}>
                             {!finished ?
                                 <>
                                     <Grid item xs={12} sm={3}>
-                                        <img src={require(`../../assets/images/${prize.type}.png`).default} alt="television" className="img-fluid" style={{
-                                            maxWidth: '200px',
+                                        <img src={require(`../../assets/images/${prize.type}.png`).default} alt={prize.type} className="img-fluid" style={{
+                                            // maxWidth: '200px',
                                         }} />
+                                        <Box mt={3} className={'text-red text-center text-32'}><b>{prize.type}</b></Box>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
                                         <Box className="d-inline-block text-48 tag tag-large">
@@ -129,7 +132,7 @@ function Winners({ location }) {
                                                     {winners.map((name, index) => (
                                                         <Box key={`typing-${name}`}>
                                                             <span>{name}</span>
-                                                            <Typing.Delay ms={3000} />
+                                                            <Typing.Delay ms={5000} />
                                                             <Typing.Reset count={1} />
                                                         </Box>
                                                     ))}
@@ -144,9 +147,9 @@ function Winners({ location }) {
                                         {winners.map(name => (<Box key={`key-${name}`} mb={1} mr={1} className="d-inline-block text-16 tag"><b>{name}</b></Box>))}
                                     </Grid>
                                     <Grid item xs={12} className="text-center">
-                                        <Link to="/spin">
-                                            <Box mt={4} mb={6} className="d-inline-block text-16 primary-button"><b>Go back to share more</b></Box>
-                                        </Link>
+                                        <a href="/spin">
+                                            <Box mt={4} mb={6} className="d-inline-block text-16 primary-button"><b>Play again</b></Box>
+                                        </a>
                                     </Grid>
                                 </>
                             }
