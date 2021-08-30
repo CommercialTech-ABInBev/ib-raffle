@@ -11,7 +11,7 @@ import { Redirect, Link } from 'react-router-dom';
 import Typing from 'react-typing-animation';
 import { get } from '../../services/api';
 
-const soundFile = require('../../assets/music/Stand_Up_For_The_Champions.mp3').default;
+// const soundFile = require('../../assets/music/Stand_Up_For_The_Champions.mp3').default;
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,24 +33,6 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-
-const names = [
-    "Marcus Harvey",
-    "Sarah McDonald",
-    "Elizabeth Ferguson",
-    "Genevieve Mathis",
-    "Marcus Harvey",
-    "Sarah McDonald",
-    "Elizabeth Ferguson",
-    "Genevieve Mathis",
-    "Marcus Harvey",
-    "Sarah McDonald",
-    "Marcus Harvey",
-    "Sarah McDonald",
-    "Elizabeth Ferguson",
-    "Genevieve Mathis",
-];
-
 function Winners({ location }) {
     const classes = useStyles();
     const [loading, setLoading] = useState(true);
@@ -59,13 +41,13 @@ function Winners({ location }) {
     const [prize, setPrize] = useState(null);
     const [, dispatch] = useContext(AppContext);
 
-    const [muted] = useState(false);
-    const [isChrome, setChrome] = useState(false);
+    // const [muted] = useState(false);
+    // const [isChrome, setChrome] = useState(false);
 
-    useEffect(() => {
-        let check = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-        setChrome(check);
-    }, []);
+    // useEffect(() => {
+    //     let check = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    //     setChrome(check);
+    // }, []);
 
     const fetchWinners = async (id) => {
         dispatch({ type: "START_LOADING" });
@@ -93,7 +75,7 @@ function Winners({ location }) {
 
     return (
         <Box className={clsx({ [classes.confetti]: finished }, classes.root)}>
-            {isChrome ?
+            {/* {isChrome ?
                 (!muted && <iframe title="audio-player-hidden" src={soundFile} allow="autoplay" style={{ display: 'none' }}></iframe>)
                 :
                 <audio autoPlay={true} loop muted={muted}>
@@ -101,7 +83,7 @@ function Winners({ location }) {
                     <source src={soundFile} type="audio/mpeg" />
                     Your browser does not support the audio element.
                 </audio>
-            }
+            } */}
             <Container maxWidth="lg" className={classes.container}>
                 <br />
                 <br />
@@ -120,9 +102,7 @@ function Winners({ location }) {
                             {!finished ?
                                 <>
                                     <Grid item xs={12} sm={3}>
-                                        <img src={require(`../../assets/images/${prize.type}.png`).default} alt={prize.type} className="img-fluid" style={{
-                                            // maxWidth: '200px',
-                                        }} />
+                                        <img src={require(`../../assets/images/${prize.type}.png`).default} alt={prize.type} className="img-fluid" />
                                         <Box mt={3} className={'text-red text-center text-32'}><b>{prize.type}</b></Box>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
