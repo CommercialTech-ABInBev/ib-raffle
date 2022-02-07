@@ -75,9 +75,9 @@ function Winners({ location }) {
 
   let delay = 5000;
 
-  if (prize && prize.type.includes("Voucher")) {
-    delay = 2500;
-  }
+  // if (prize && prize.type.includes("Voucher")) {
+  //   delay = 2500;
+  // }
 
   return (
     <Box className={clsx({ [classes.confetti]: finished }, classes.root)}>
