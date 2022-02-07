@@ -31,8 +31,8 @@ export const post = async (url, data, authorize = false, headers = null) => {
 export const get = async (url, authorize = false, headers = null) => {
     
     let config = {
-      "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
+      Accept: "application/json",
+      ...headers,
     };
 
     try {
