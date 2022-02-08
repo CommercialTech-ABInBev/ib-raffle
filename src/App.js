@@ -28,10 +28,8 @@ function App() {
           <Router>
             <Switch>
               <Route path="/login" component={Login} />
-              {/* <Route isPrivate path="/admin" component={Admin} />
-              <Route isPrivate path="/" component={Raffle} /> */}
-              <Route path="/admin" component={Admin} />
-              <Route path="/" component={Raffle} />
+              <Route isPrivate path="/admin" component={Admin} />
+              <Route isPrivate path="/" component={Raffle} />
             </Switch>
           </Router>
         </ToastProvider>
