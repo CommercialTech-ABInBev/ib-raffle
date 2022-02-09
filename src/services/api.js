@@ -31,8 +31,8 @@ export const post = async (url, data, authorize = false, headers = null) => {
 export const get = async (url, authorize = false, headers = null) => {
     
     let config = {
-        'Accept': 'application/json',
-        ...headers
+      Accept: "application/json",
+      ...headers,
     };
 
     try {
