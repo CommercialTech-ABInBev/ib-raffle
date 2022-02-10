@@ -76,7 +76,7 @@ function Winners({ location }) {
   let delay = 5000;
 
   if (prize && prize.type.includes("Voucher")) {
-    delay = 1000;
+    delay = 500;
   }
 
   return (
